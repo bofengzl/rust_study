@@ -1,10 +1,18 @@
+workspace = { members = [ "aaa", "art"] }
 [package]
 name = "rust-study"
 version = "0.1.0"
 edition = "2021"
 
+[profile.dev]
+opt-level = 1
+
+[profile.release]
+opt-level = 3
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+art = { version = "0.1.0", path = "art" }
 ferris-says = "0.2"
 rand = "0.8.5"
