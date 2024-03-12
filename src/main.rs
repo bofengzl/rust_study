@@ -849,11 +849,11 @@
 
 // ********** Rust 函数式语言功能：迭代器和闭包  START**********
 use std::{thread, time::Duration};
-// use art::kinds::PrimaryColor;
-// use art::utils::mix;
+use art::kinds::PrimaryColor;
+use art::utils::mix;
 
-use art::PrimaryColor;
-use art::mix;
+// use art::PrimaryColor;
+// use art::mix;
 
 /** T恤颜色 */
 // 使用#[derive(...)]属性来自动生成Debug, PartialEq, Copy, Clone等trait的实现
