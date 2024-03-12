@@ -848,7 +848,6 @@
 // ********** 编写一个I/O项目：构建命令行程序  END**********
 
 // ********** Rust 函数式语言功能：迭代器和闭包  START**********
-use ferris_says::say;
 use std::{thread, time::Duration};
 // use art::kinds::PrimaryColor;
 // use art::utils::mix;

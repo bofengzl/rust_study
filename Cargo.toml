@@ -3,6 +3,8 @@ workspace = { members = [ "aaa", "art"] }
 name = "rust-study"
 version = "0.1.0"
 edition = "2021"
+description = "study rust"
+license = "MIT OR Apache-2.0"
 
 [profile.dev]
 opt-level = 1
