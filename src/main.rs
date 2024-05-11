@@ -732,7 +732,6 @@
 
 // ********** 泛型、Trait、生命周期 START**********
 
-
 // use std::fmt::{Display, Debug};
 
 // use rust_study::{Summary, Tweet};
@@ -775,7 +774,6 @@
 // //   println!("Breaking news! {}", item.size());
 // // }
 
-
 // // 通过 + 指定多个 trait bound
 // // pub fn pass_more(item: &(impl Summary + Display)){
 
@@ -790,8 +788,8 @@
 
 // // pub fn some_fun<T: Display + Clone, U: Display + Debug>(item1: &T, item2: &U) -> i32{}
 // // where 简化写法
-// // pub fn some_fun<T, U>(t: &T, u: &U) -> i32 
-// // where 
+// // pub fn some_fun<T, U>(t: &T, u: &U) -> i32
+// // where
 // //   T: Display + Clone,
 // //   U: Display + Debug,
 // // {
@@ -848,138 +846,213 @@
 // ********** 编写一个I/O项目：构建命令行程序  END**********
 
 // ********** Rust 函数式语言功能：迭代器和闭包  START**********
-use std::{thread, time::Duration};
-use art::kinds::PrimaryColor;
-use art::utils::mix;
+// use std::{thread, time::Duration};
+// // use art::kinds::PrimaryColor;
+// // use art::utils::mix;
 
-// use art::PrimaryColor;
 // use art::mix;
+// use art::PrimaryColor;
 
-/** T恤颜色 */
-// 使用#[derive(...)]属性来自动生成Debug, PartialEq, Copy, Clone等trait的实现
-// Debug trait 允许我们方便地打印枚举的值
-// PartialEq trait 允许我们比较两个枚举值是否相等
-// Copy trait 允许我们复制枚举值而不需要额外的堆分配
-// Clone trait 是Copy trait的超集，允许我们复制任何类型的值
-#[derive(Debug, PartialEq, Copy, Clone)]
-enum ShirtColors {
-  Red,
-  Blue,
-}
-/** 库存 */
-struct  Inventory {
-  shirts: Vec<ShirtColors>,
-}
+// /** T恤颜色 */
+// // 使用#[derive(...)]属性来自动生成Debug, PartialEq, Copy, Clone等trait的实现
+// // Debug trait 允许我们方便地打印枚举的值
+// // PartialEq trait 允许我们比较两个枚举值是否相等
+// // Copy trait 允许我们复制枚举值而不需要额外的堆分配
+// // Clone trait 是Copy trait的超集，允许我们复制任何类型的值
+// #[derive(Debug, PartialEq, Copy, Clone)]
+// enum ShirtColors {
+//     Red,
+//     Blue,
+// }
+// /** 库存 */
+// struct Inventory {
+//     shirts: Vec<ShirtColors>,
+// }
 
+// impl Inventory {
+//     // 获取免费颜色的T恤、
+//     fn giveaway(&self, user_preference: Option<ShirtColors>) -> ShirtColors {
+//         // || self.most_stocked() 使用了闭包 并在 user_preference 上调用 unwrap_or_else 方法
+//         // 如果 Option<T> 是 Some 成员，则 unwrap_or_else 返回 Some 中的值。如果 Option<T> 是 None 成员，则 unwrap_or_else 调用闭包并返回闭包的返回值。
+//         user_preference.unwrap_or_else(|| self.most_stocked())
+//     }
 
-impl Inventory {
-  // 获取免费颜色的T恤、
-  fn giveaway(&self, user_preference: Option<ShirtColors>) -> ShirtColors {
-    // || self.most_stocked() 使用了闭包 并在 user_preference 上调用 unwrap_or_else 方法
-    // 如果 Option<T> 是 Some 成员，则 unwrap_or_else 返回 Some 中的值。如果 Option<T> 是 None 成员，则 unwrap_or_else 调用闭包并返回闭包的返回值。
-    user_preference.unwrap_or_else(|| self.most_stocked())
-  }
+//     // 发放库存最多颜色的T恤
+//     fn most_stocked(&self) -> ShirtColors {
+//         // 红色库存数量
+//         let mut num_red = 0;
+//         // 蓝色库存数量
+//         let mut num_blue = 0;
+//         // 遍历库存、计算数量
+//         for color in &self.shirts {
+//             match color {
+//                 ShirtColors::Red => num_red += 1,
+//                 ShirtColors::Blue => num_blue += 1,
+//             }
+//         }
+//         // 红色 > 蓝色 → 返回红色 反之 返回蓝色
+//         if num_red > num_blue {
+//             ShirtColors::Red
+//         } else {
+//             ShirtColors::Blue
+//         }
+//     }
+// }
 
-  // 发放库存最多颜色的T恤
-  fn most_stocked(&self) -> ShirtColors {
-    // 红色库存数量
-    let mut num_red = 0;
-    // 蓝色库存数量
-    let mut num_blue = 0;
-    // 遍历库存、计算数量
-    for color in &self.shirts {
-      match color {
-        ShirtColors::Red => num_red += 1,
-        ShirtColors::Blue => num_blue += 1,
-      }
-    }
-    // 红色 > 蓝色 → 返回红色 反之 返回蓝色
-    if num_red > num_blue {
-        ShirtColors::Red
-    } else {
-        ShirtColors::Blue
-    }
-  }
-}
+// fn main() {
+//     let store = Inventory {
+//         shirts: vec![ShirtColors::Red, ShirtColors::Blue, ShirtColors::Red],
+//     };
 
-fn main() {
+//     let user_pref1 = Some(ShirtColors::Red);
+//     let giveaway1 = store.giveaway(user_pref1);
+//     println!(
+//         "user_pre1 preference to : {:?} get: {:?}",
+//         user_pref1, giveaway1
+//     );
 
-    let store = Inventory {
-        shirts: vec![ShirtColors::Red, ShirtColors::Blue, ShirtColors::Red,],
-    };
+//     let user_perf2 = None;
+//     let giveaway2 = store.giveaway(user_perf2);
+//     println!(
+//         "user_per1 preference to : {:?} get: {:?}",
+//         user_perf2, giveaway2
+//     );
+//     let res = closure(10);
+//     println!("The res is : {:?} ", res);
 
-    let user_pref1 = Some(ShirtColors::Red);
-    let giveaway1 = store.giveaway(user_pref1);
-    println!("user_pre1 preference to : {:?} get: {:?}", user_pref1, giveaway1);
+//     // 捕获引用
+//     let mut list = vec![1, 2, 3];
+//     println!("The value of list is: {:#?}", list);
 
-    let user_perf2 = None;
-    let giveaway2 = store.giveaway(user_perf2);
-    println!("user_per1 preference to : {:?} get: {:?}", user_perf2, giveaway2);
-    let res = closure(10);
-    println!("The res is : {:?} ", res);
+//     let only_borrows = || println!("From closure: {:?}", list);
 
-    // 捕获引用
-    let mut list = vec![1, 2, 3];
-    println!("The value of list is: {:#?}", list);
+//     println!("Before calling closure: {:?}", list);
+//     only_borrows();
+//     println!("After calling closure: {:?}", list);
 
-    let only_borrows = || println!("From closure: {:?}", list);
+//     let mut borrow_mutably = || list.push(7);
+//     borrow_mutably();
+//     println!("list push item result: {:?}", list);
 
-    println!("Before calling closure: {:?}", list);
-    only_borrows();
-    println!("After calling closure: {:?}", list);
+//     // 在新线程上打印列表 move转移了list 所有权至新线程
+//     thread::spawn(move || println!("From thread move list: {:?}", list))
+//         .join()
+//         .unwrap();
 
-    let mut borrow_mutably = || list.push(7);
-    borrow_mutably();
-    println!("list push item result: {:?}", list);
+//     // 将捕获的值移出闭包和 Fn trait
+//     #[derive(Debug)]
+//     struct Rectangle {
+//         width: u32,
+//         #[allow(dead_code)]
+//         height: u32,
+//     }
 
-    // 在新线程上打印列表 move转移了list 所有权至新线程
-    thread::spawn(move || println!("From thread move list: {:?}", list)).join().unwrap();
+//     let mut list2 = [
+//         Rectangle {
+//             width: 10,
+//             height: 7,
+//         },
+//         Rectangle {
+//             width: 4,
+//             height: 7,
+//         },
+//         Rectangle {
+//             width: 8,
+//             height: 7,
+//         },
+//     ];
 
-    // 将捕获的值移出闭包和 Fn trait
-    #[derive(Debug)]
-    struct Rectangle {
-        width: u32,
-        #[allow(dead_code)]
-        height: u32,
-    }
+//     // sort_by_key() 排序
+//     // list2.sort_by_key(|r| r.width);
+//     // println!("{:#?}", list2);
 
-    let mut list2 = [
-        Rectangle { width: 10 , height: 7 },
-        Rectangle { width: 4 , height: 7 },
-        Rectangle { width: 8 , height: 7 },
-    ];
+//     // 统计调用次数
+//     let mut num_sort_operations = 0;
+//     list2.sort_by_key(|r| {
+//         num_sort_operations += 1;
+//         r.width
+//     });
+//     println!("{:#?}, sorted in {num_sort_operations} operations", list2);
 
-    // sort_by_key() 排序
-    // list2.sort_by_key(|r| r.width);
-    // println!("{:#?}", list2);
+//     let red = PrimaryColor::Red;
+//     let yellow = PrimaryColor::Yellow;
+//     let mix_color = mix(red, yellow);
+//     println!("The Value of mix is :{:?}", mix_color)
+// }
 
-    // 统计调用次数
-    let mut num_sort_operations = 0;
-    list2.sort_by_key(|r| {
-        num_sort_operations += 1;
-        r.width
-    });
-    println!("{:#?}, sorted in {num_sort_operations} operations", list2);
+// // 闭包类型推断和注解
 
-
-    let red = PrimaryColor::Red;
-    let yellow = PrimaryColor::Yellow;
-    let mix_color = mix(red,yellow);
-    println!("The Value of mix is :{:?}", mix_color)
-}
-
-// 闭包类型推断和注解
-
-// 定义一个函数，它接受一个闭包作为参数并返回一个数字。
-fn closure(num: u32) -> u32 {
-    // 定义闭包
-    let expensive = |num: u32| -> u32 {
-        println!("delay...");
-        // 当前线程休眠2s
-        thread::sleep(Duration::from_secs(2));
-        num
-    };
-    expensive(num)
-}
+// // 定义一个函数，它接受一个闭包作为参数并返回一个数字。
+// fn closure(num: u32) -> u32 {
+//     // 定义闭包
+//     let expensive = |num: u32| -> u32 {
+//         println!("delay...");
+//         // 当前线程休眠2s
+//         thread::sleep(Duration::from_secs(2));
+//         num
+//     };
+//     expensive(num)
+// }
 
 // ********** Rust 函数式语言功能：迭代器和闭包  END**********
+
+
+// ********** Tesseract OCR 识别  START**********
+// use rusty_tesseract::{Image, Args, image_to_string};
+
+// fn main() {
+//     // 从文件创建图像对象
+//     let img = Image::from_path("../PixPin_2024-03-12_16-42-42.png").unwrap();
+//     // 设置Tesseract参数
+//     let args = Args::default();
+//     // 进行图像文本识别
+//     let output = image_to_string(&img, &args).unwrap();
+//     println!("识别结果: {}", output);
+// }
+
+// ********** Tesseract OCR 识别  END**********
+
+extern crate ffmpeg;
+
+use ffmpeg::format;
+use ffmpeg::codec;
+use ffmpeg::util::frame::video::Video;
+use ffmpeg::software::scaling::{context::Context, flag::Flags};
+use ffmpeg::software::scaling::flag::Flags as ScalingFlags;
+use ffmpeg::software::scaling::context::Context as ScalingContext;
+use ffmpeg::software::scaling::context::format::Format as ScalingFormat;
+use ffmpeg::software::scaling::context::flag::Flags as ScalingContextFlags;
+use ffmpeg::software::scaling::context::flag::Flags as ScalingContextFlag;
+
+fn main() {
+    ffmpeg::init().unwrap();
+
+    // 设置屏幕录制参数
+    let width = 1920;
+    let height = 1080;
+    let frame_rate = 30;
+
+    // 创建屏幕录制的上下文
+    let mut context = ffmpeg::format::context::output(&output_file).unwrap();
+    let mut stream = context.add_stream(ffmpeg::codec::encoder::find(ffmpeg::codec::Id::H264).unwrap()).unwrap();
+    stream.set_parameters(ffmpeg::codec::Parameters::Video(ffmpeg::codec::video::Parameters::new().width(width).height(height).format(ffmpeg::format::Pixel::YUV420P).time_base(ffmpeg::util::rational::Rational::new(1, frame_rate)))).unwrap();
+    stream.open(None).unwrap();
+
+    // 开始录制屏幕
+    for _ in 0..num_frames {
+        // 获取屏幕帧
+        let frame = get_screen_frame(width, height);
+
+        // 编码并写入视频流
+        stream.encode(&frame).unwrap();
+    }
+
+    // 完成屏幕录制
+    stream.close().unwrap();
+    context.close().unwrap();
+}
+
+fn get_screen_frame(width: usize, height: usize) -> Video {
+    // 在这里实现获取屏幕帧的逻辑，例如使用桌面捕获库等
+    // 返回屏幕帧
+}

@@ -8,6 +8,7 @@ pub use self::kinds::SecondaryColor;
 pub use self::utils::mix;
 
 pub mod kinds {
+    #[derive(Debug)]
     pub enum PrimaryColor {
         Red,
         Yellow,
@@ -28,6 +29,7 @@ pub mod utils {
     /// 将两种原色以等量的形式组合创建
     /// SecondaryColor：辅助颜色
     pub fn mix(c1: PrimaryColor, c2: PrimaryColor) -> SecondaryColor {
+        println!("{:?},{:?}",c1, c2);
         SecondaryColor::Green
     }
 }
